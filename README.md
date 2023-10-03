@@ -1,5 +1,4 @@
 # RSA-RSA-Attack
-<a href="https://github.com/404"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"></a>
 
 # **1.Tổng quan RSA**
 - RSA thuộc nhóm hệ mã khóa công khai, dựa vào độ khó của bài toán phân tích 1 số ra thừa số nguyên tố (factoring problem). Để tạo cặp khóa Public key và Private key, Alice cần:
@@ -196,3 +195,4 @@ else:
 print(long_to_bytes(pow(c,d,n)))
 ```
 ## 6.Blinding Attack
+___
