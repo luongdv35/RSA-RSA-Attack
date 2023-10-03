@@ -92,7 +92,6 @@ print(long_to_bytes(flag))
 - n có thể được phân tích thừa số nguyên tố như sau: 
 ``n = x^2 - y^2 = (x - y)(x + y)``
 - Định lý Fermat giúp tìm p, q
-- ![](https://hackmd.io/_uploads/SyeNAPR1c2.png)
 - Code minh họa:
 ```python
 def isqrt(n):
