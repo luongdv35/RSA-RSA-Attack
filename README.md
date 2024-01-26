@@ -445,3 +445,10 @@ sage: from Crypto.Util.number import isPrime, GCD
 187261 8275629468590614667884614599278593237258686111405345888268221129814081809682982742676180514534238891248302334619164139839173447495925780801832743975865311
 True
 ```
+## Reference
+  - https://bitsdeep.com/posts/attacking-rsa-for-fun-and-ctf-points-part-1/ (part-2, part-3, part-4)
+  - https://crypto.stanford.edu/~dabo/pubs/papers/RSA-survey.pdf
+  - https://en.wikipedia.org/wiki/RSA_(cryptosystem)
+  - https://en.wikipedia.org/wiki/Chinese_remainder_theorem#:~:text=In%20mathematics%2C%20the%20Chinese%20remainder,are%20pairwise%20coprime%20(no%20two)
+  - https://github.com/defund/coppersmith/tree/master
+  - https://cr.yp.to/bib/2001/coppersmith.pdf
