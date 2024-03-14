@@ -4,9 +4,9 @@
 
 - RSA thuộc nhóm hệ mã khóa công khai, dựa vào độ khó của bài toán phân tích 1 số ra thừa số nguyên tố (factoring problem). Để tạo cặp khóa Public key và Private key, Alice cần: 
     - Chọn 2 số nguyên tố lớn p, q với p ≠ q 
-    - Tính $$N = pq$$
-    - Tính giá trị hàm số Ơle $$φ(N) = (p-1)(q-1)$$
-    - Chọn 1 số e sao cho $$1 < e < φ(N) \ và \ gcd(e,φ(N)) = 1$$
+    - Tính $$N = pq $$
+    - Tính giá trị hàm số Ơle $$φ(N) = (p-1)(q-1) $$
+    - Chọn 1 số e sao cho $$1 < e < φ(N) \ và \ gcd(e,φ(N)) = 1 $$
     - Tính $$d = e^{-1} (mod φ(N))$$, số d thỏa mãn $$ed ≡ 1 (mod φ(N))$$
  - Public Key gồm:
 
@@ -14,10 +14,10 @@
      $$e  \text{ - số mũ mã hóa} $$
  - Private Key gồm:
 
-     $$N  \text{ - mudulus, xuất hiện cả trong khóa công khai và bí mật}$$
-     $$d  \text{ - số mũ giải mã}$$
+     $$N  \text{ - mudulus, xuất hiện cả trong khóa công khai và bí mật} $$
+     $$d  \text{ - số mũ giải mã} $$
  - Khi Bob muốn gửi một tin nhắn M cho Alice, Bob chuyển M thành một số m < n theo 1 cách thỏa thuận trước. Bob sẽ tính ra bản mã c từ bản rõ m theo công thức: 
-     $$c = m ^ e (modN)$$
+     $$c = m ^ e (modN) $$
  - Để giải mã, Alice dùng Private Key của mình để tính ngược lại:
      $$m = c ^ d (modN)$$
  - Quá trình giải mã có thể thu được m ban đầu là do: 
@@ -50,30 +50,30 @@ f = FactorDB(n)
 f.connect()
 [p, q] =(f.get_factor_list())
 
-phi =(p-1)*(q-1)
+phi =(p-1) * (q-1)
 d = inverse(e,phi)
 decrypted = pow(ct,d,n)
 print(long_to_bytes(decrypted))
 ```
 ### 2. Small e
 
- - Giả sử Alice muốn chia sẻ một tin nhắn M nhỏ (một khóa đối xứng) qua một kênh không an toàn. Cô ấy mã hóa nó bằng RSA. n được chọn từ các số nguyên tố mạnh và khá lớn nhưng cô ấy đã chọn e = 3.
+ - Giả sử Alice muốn chia sẻ một tin nhắn M nhỏ (một khóa đối xứng) qua một kênh không an toàn. Cô ấy mã hóa nó bằng RSA. n được chọn từ các số nguyên tố mạnh và khá lớn nhưng cô ấy đã chọn $e = 3$.
 
 - Sẽ không có vấn đề gì nếu cô ấy sử dụng đệm nhưng rõ ràng không phải vậy. Bạn chặn tin nhắn và suy ra từ khóa công khai rằng nó được tính toán như sau: 
      $$C = M^3 [n]$$
 
- - Nhưng vì nhỏ, $M^3 < n$ vì $M$ vậy nó không bị ảnh hưởng bởi modulo. Bạn chỉ cần tính căn bậc ba của C để có được thông điệp gốc.
+ - Nhưng vì nhỏ, $M^3 < n$ vì M vậy nó không bị ảnh hưởng bởi modulo. Bạn chỉ cần tính căn bậc ba của C để có được thông điệp gốc.
         $$C = M ^ 3 (modN) = M^3 $$
  - Code minh họa: 
 ```python3
-from Crypto.Util.number import *
+from Crypto.Util.number import  * 
 import gmpy2
 # flag = b"KCSC{?????????}"
 # flag = bytes_to_long(flag)
 
 # p = getPrime(1024)
 # q = getPrime(1024)
-# N = p*q
+# N = p * q
 # e = 3
 # cipher = pow(flag, e, N)
 # print(f"{cipher = }")
@@ -93,7 +93,7 @@ print(long_to_bytes(gmpy2.iroot(cipher, e)[0]))
 - Ta có : 
   - Với $x = \frac{p - q}{2}$ & $y = \frac{p + q}{2}$
 n có thể được phân tích thừa số nguyên tố như sau: $n = x^2 - y^2 = (x - y)(x + y)$
-- Định lý Fermat giúp tìm $p, q$
+- Định lý Fermat giúp tìm p, q
 - Code minh họa:
 ```python3
 def isqrt(n):
@@ -107,17 +107,17 @@ def isqrt(n):
 
 def fermat(n):
     a = isqrt(n)
-    b2 = a*a - n
+    b2 = a * a - n
     b = isqrt(n)
     count = 0
-    while b*b != b2:
+    while b * b != b2:
         a = a + 1
-        b2 = a*a - n
+        b2 = a * a - n
         b = isqrt(b2)
         count += 1
     p = a+b
     q = a-b
-    assert n == p * q
+    assert n == p  *  q
     return p, q
 
 
@@ -132,8 +132,8 @@ if __name__ == '__main__':
     main()
 ```
 ### 4.Hastad Broadcast Attack
- - Đặt bối cảnh một mạng nội bộ sử dụng RSA làm phương thức bảo mật truyền tin. Mỗi máy tính trong mạng LAN sẽ có một bộ Public Key (ni, ei) riêng. Giả sử rằng, quản trị viên muốn sử dụng hệ thống mã hóa đơn giản nên anh ta chọn 1 số e nhỏ (e = 3) để dùng chung cho tất cả các máy trong mạng LAN, hay nói cách khác $e_1 = e_2 = e_n = e = 3$.
-- Kịch bản tấn công xảy ra nếu máy chủ gửi cùng 1 tin nhắn broadcast m (đã được mã hóa thành $c_1, c_2$, ... cho nhiều máy tính trong mạng, và ta bắt được ít nhất e ciphertext $c_1$, $c_2$, ..., $c_e$. Lúc này, ta sẽ có thể khôi phục lại plaintext m không mấy khó khăn.
+ - Đặt bối cảnh một mạng nội bộ sử dụng RSA làm phương thức bảo mật truyền tin. Mỗi máy tính trong mạng LAN sẽ có một bộ Public Key $(n_i, e_i)$ riêng. Giả sử rằng, quản trị viên muốn sử dụng hệ thống mã hóa đơn giản nên anh ta chọn 1 số e nhỏ (e = 3) để dùng chung cho tất cả các máy trong mạng LAN, hay nói cách khác $e_1 = e_2 = e_n = e = 3$ .
+- Kịch bản tấn công xảy ra nếu máy chủ gửi cùng 1 tin nhắn broadcast m (đã được mã hóa thành c1, c2, ... cho nhiều máy tính trong mạng, và ta bắt được ít nhất e ciphertext c1, c2, ..., ce. Lúc này, ta sẽ có thể khôi phục lại plaintext m không mấy khó khăn.
 - Giả sử e = 3, đặt $M = m^3$. Nhiệm vụ của ta là giải hệ phương trình đồng dư: 
 ```sage!
 M ≡ c1[n1]
@@ -141,10 +141,10 @@ M ≡ c2[n2]
 m ≡ c3[n3]
 ```
 - Để tìm được M thì điều kiện cần có là GCD(ni, nj) = 1
-- Ta có thể áp dụng [Chinese Remainder Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem#:~:text=In%20mathematics%2C%20the%20Chinese%20remainder,are%20pairwise%20coprime%20(no%20two)). Sau khi tính được M, ta sẽ tìm lại được m (vì m < ni nên M = m ^ 3 < N, ta chỉ cần tính căn bậc 3 của M).
+- Ta có thể áp dụng [Chinese Remainder Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem#:~:text=In%20mathematics%2C%20the%20Chinese%20remainder,are%20pairwise%20coprime%20(no%20two)). Sau khi tính được M, ta sẽ tìm lại được m (vì $m < n_i$ nên $M = m ^ 3 < N$, ta chỉ cần tính căn bậc 3 của M).
  - Code minh họa:
 ```python3
-from Crypto.Util.number import *
+from Crypto.Util.number import  * 
 import gmpy2
 
 e = 17
@@ -160,7 +160,7 @@ n3 = 214044933334597736518334688894948544521463419094892903627950424220810255493
 
 
 
-N=n1*n2*n3
+N=n1 * n2 * n3
 N1=N//n1
 N2=N//n2
 N3=N//n3
@@ -169,26 +169,30 @@ u1 = inverse(N1, n1)
 u2 = inverse(N2, n2)
 u3 = inverse(N3, n3)
 
-M = (c1*u1*N1 + c3*u3*N3 + c2*u2*N2) % N
+M = (c1 * u1 * N1 + c3 * u3 * N3 + c2 * u2 * N2) % N
 m = gmpy2.iroot(M,e)[0]
 print(long_to_bytes(m))
 ```
 ### 5.Wiener Attack
 - Để giảm thời gian giải mã (hoặc thời gian tạo chữ ký), người ta có thể muốn sử dụng một giá trị nhỏ của d hơn là một d ngẫu nhiên. Do lũy thừa mô-đun cần có thời gian tuyến tính trong log2 d, nên một d nhỏ có thể cải thiện hiệu suất ít nhất là hệ số 10 (đối với mô-đun 1024 bit). Thật không may, một cuộc tấn công thông minh của M. Wiener [19] cho thấy rằng một d nhỏ dẫn đến sự phá vỡ hoàn toàn hệ thống mật mã.
-- Đặt $N= p*q$ với $q < p < 2q$ . Đặt ![](https://hackmd.io/_uploads/Sy8w0eb5h.png). Cho trước (N,e) với ed = 1 mod phi(N), Marvin có thể phục hồi d một cách hiệu quả.
-- Bằng chứng dựa trên các xấp xỉ sử dụng các phân số liên tục. Vì ed = 1 mod phi(N), nên tồn tại k sao cho ed − kphi(N) = 1. Do đó, ![](https://hackmd.io/_uploads/HyEwtb-5h.png)
-- Do đó, k/d là một xấp xỉ của e/phi(N). Mặc dù Marvin không biết phi(N), anh ấy có thể sử dụng N để tính gần đúng nó. Thật vậy, vì phi(N) = N − p − q + 1 và p + q − 1 < 3sqrt(N), nên chúng ta có |N − phi(N)| < 3sqrt(N). Sử dụng N thay cho phi(N), chúng tôi thu được: ![](https://hackmd.io/_uploads/SkDUqWZ92.png)
-- Bây giờ, kphi(N) = ed − 1 < ed. Vì e < phi(N), chúng ta thấy rằng k < d < ![](https://hackmd.io/_uploads/HJ52cWbc3.png) . Do đó chúng tôi có được:![image](https://hackmd.io/_uploads/SkjBsRo_p.png)
+- Đặt $N= p * q$ với $q < p < 2q$ . Đặt $d < \frac{1}{3}N^{\frac{1}{4}}. Cho trước (N,e) với $ed = 1 mod phi(N)$ , Marvin có thể phục hồi d một cách hiệu quả.
+- Bằng chứng dựa trên các xấp xỉ sử dụng các phân số liên tục. Vì $ed = 1 mod phi(N)$, nên tồn tại k sao cho $ed − kphi(N) = 1$. Do đó, ![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/046e2b22-27a0-4db2-8549-ffced49a0d3c)
+- Do đó, $\frac{k}{d}$ là một xấp xỉ của $\frac{e}{phi(N)}$. Mặc dù Marvin không biết phi(N), anh ấy có thể sử dụng N để tính gần đúng nó. Thật vậy, vì $phi(N) = N − p − q + 1$ và $p + q − 1 < 3 \sqrt{N}$ , nên chúng ta có $|N − phi(N)| < 3 \sqrt{N}$ . Sử dụng N thay cho phi(N), chúng tôi thu được: ![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/33a41fe7-1918-4cc7-8330-9fa2fa9b8557)
+
+
+- Bây giờ, $k * phi(N) = ed − 1 < ed$ . Vì $e < phi(N)$ , chúng ta thấy rằng $k < d < \frac{1}{3}N^{\frac{1}{4}}$ . Do đó chúng tôi có được: ![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/3a16e941-6d45-490a-89e5-caf59c02a1dc)
+
 
 - Cuối cùng có được
-![image](https://hackmd.io/_uploads/Sk3phCj_T.png)
+![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/cf622d3e-11e8-444d-b470-d056d7f2206f)
 
 
-- Đây là một quan hệ xấp xỉ cổ điển. Các số lượng phân số k/d với d < N gần đúng với e/N bị giới hạn bởi log2 N. Thực tế, tất cả các phân số như vậy thu được dưới dạng các phần tử hội tụ của khai triển phân số liên tục của e/N . Tất cả người ta phải làm là tính log N hội tụ của phân số tiếp tục cho e/N. Một trong số này sẽ bằng k/d. Vì ed − kphi(N) = 1, nên ta có gcd(k, d) = 1, và do đó k/d là phân số rút gọn. Đây là một thuật toán thời gian tuyến tính để khôi phục khóa bí mật d.
+
+- Đây là một quan hệ xấp xỉ cổ điển. Các số lượng phân số $\frac{k}{d}$ với d < N gần đúng với $\frac{e}{N}$ bị giới hạn bởi $log_2N$. Thực tế, tất cả các phân số như vậy thu được dưới dạng các phần tử hội tụ của khai triển phân số liên tục của $\frac{e}{N}$ . Tất cả người ta phải làm là tính log N hội tụ của phân số tiếp tục cho $\frac{e}{N}$. Một trong số này sẽ bằng $\frac{k}{d}$. Vì $ed − kphi(N) = 1$, nên ta có $gcd(k, d) = 1$, và do đó $\frac{k}{d}$ là phân số rút gọn. Đây là một thuật toán thời gian tuyến tính để khôi phục khóa bí mật d.
 - Code minh họa:
 
 ```python3
-from Crypto.Util.number import*
+from Crypto.Util.number import * 
 import owiener
 N = 'b12746657c720a434861e9a4828b3c89a6b8d4a1bd921054e48d47124dbcc9cfcdcc39261c5e93817c167db818081613f57729e0039875c72a5ae1f0bc5ef7c933880c2ad528adbc9b1430003a491e460917b34c4590977df47772fab1ee0ab251f94065ab3004893fe1b2958008848b0124f22c4e75f60ed3889fb62e5ef4dcc247a3d6e23072641e62566cd96ee8114b227b8f498f9a578fc6f687d07acdbb523b6029c5bbeecd5efaf4c4d35304e5e6b5b95db0e89299529eb953f52ca3247d4cd03a15939e7d638b168fd00a1cb5b0cc5c2cc98175c1ad0b959c2ab2f17f917c0ccee8c3fe589b4cb441e817f75e575fc96a4fe7bfea897f57692b050d2b'
 E = '9d0637faa46281b533e83cc37e1cf5626bd33f712cc1948622f10ec26f766fb37b9cd6c7a6e4b2c03bce0dd70d5a3a28b6b0c941d8792bc6a870568790ebcd30f40277af59e0fd3141e272c48f8e33592965997c7d93006c27bf3a2b8fb71831dfa939c0ba2c7569dd1b660efc6c8966e674fbe6e051811d92a802c789d895f356ceec9722d5a7b617d21b8aa42dd6a45de721953939a5a81b8dffc9490acd4f60b0c0475883ff7e2ab50b39b2deeedaefefffc52ae2e03f72756d9b4f7b6bd85b1a6764b31312bc375a2298b78b0263d492205d2a5aa7a227abaf41ab4ea8ce0e75728a5177fe90ace36fdc5dba53317bbf90e60a6f2311bb333bf55ba3245f'
@@ -216,21 +220,21 @@ print(long_to_bytes(pow(c,d,n)))
      $$C2 = M^e2 (modN)$$
 
 - Để thực hiện tấn công tìm m thì ta cần tìm u, v từ
-$$ GCD(e1, e2) = 1 <=> e1*u + e2*v = 1$$
+$$GCD(e1, e2) = 1 <=> e1 * u + e2 * v = 1$$
 ```!
 C1 = M^e1
 C2 = M^e2
-C1^u = M^e1*u
-c2^v = M^e2*v
+C1^u = M^e1 * u
+c2^v = M^e2 * v
 
-Khi đó C1^u*C2^v = M^e1*u * M^e2*v = M^(e1*u + e2*v) = M
+Khi đó C1^u * C2^v = M^e1 * u  *  M^e2 * v = M^(e1 * u + e2 * v) = M
 
 ```
  - Từ đó ta sẽ khôi phục được bản mã.
 Code minh họa: bài RSA5 byuctf 2023
 ```python3
-from Crypto.Util.number import *
-from numpy import *
+from Crypto.Util.number import  * 
+from numpy import  * 
 n = 158307578375429142391814474806884486236362186916188452580137711655290101749246194796158132723192108831610021920979976831387798531310286521988621973910776725756124498277292094830880179737057636826926718870947402385998304759357604096043571760391265436342427330673679572532727716853811470803394787706010603830747
 e1 = 65537
 
@@ -245,9 +249,9 @@ def egcd(a,b):
     v, v1 = 0, 1
     while b:
         q = a // b
-        u, u1 = u1, u - q * u1
-        v, v1 = v1, v - q * v1
-        a, b = b, a - q * b
+        u, u1 = u1, u - q  *  u1
+        v, v1 = v1, v - q  *  v1
+        a, b = b, a - q  *  b
     return u, v, a
 
 print(egcd(e1, e2))
@@ -257,7 +261,7 @@ v=4096
 
 
 c1_inv = inverse(c1, n)
-m= (pow(c1_inv,-u) * pow(c2,v))%n
+m= (pow(c1_inv,-u)  *  pow(c2,v))%n
 print(long_to_bytes(m))
 # flag: byuctf{NEVER_USE_SAME_MODULUS_WITH_DIFFERENT_e_VALUES}
 ```
@@ -265,35 +269,38 @@ print(long_to_bytes(m))
  - Giả định rằng bạn là một phần của nhóm và sở hữu khóa công khai và riêng tư với cùng mô đun với những người khác.
  - Ta có:
 
-    $$e*d = 1 mod φ(n)$$
-    $$e*d = k * φ(n) + 1$$
-    $$k = (e*d - 1) / φ(n)$$
-    $$φ(n) = (e*d - 1) / k$$
+    $$e * d = 1 mod φ(n)$$
+    $$e * d = k  *  φ(n) + 1$$
+    $$k = (e * d - 1) / φ(n)$$
+    $$φ(n) = (e * d - 1) / k$$
 
  - Nếu kết quả không phải là số nguyên, hãy tăng k dần cho đến khi thu được kết quả.
- - Bây giờ bạn đã biết φ(n) và e của nạn nhân, bạn có thể tính toán các khóa ``d(victim) = e(victim) ^ -1 mod φ(n)`` riêng tương ứng và giải mã các tin nhắn
+ - Bây giờ bạn đã biết φ(n) và e của nạn nhân, bạn có thể tính toán các khóa $d(victim) = e(victim) ^ {-1} mod φ(n)$ riêng tương ứng và giải mã các tin nhắn
 ### 7.Blinding Attack
  - Khi Marvin cố gắng gửi một tin nhắn tương tự như Alices, Bob nhận thấy rằng tin nhắn có một số thông điệp nguy hiểm trong đó và từ chối ký vào tin nhắn. Nhưng RSA vốn không có bất kỳ cơ chế kiểm tra nào, những ràng buộc này có thể được bỏ qua một cách dễ dàng. Đôi khi chỉ cần nhân thông điệp nguy hiểm với một số nguyên tố là đủ. Vì vậy, Marvin có thể thử một cuộc tấn công mù bằng cách sử dụng các bước sau:
-      - 1. Chuẩn bị một bộ đệm r^e (r = số nguyên nhỏ và e = khóa công khai) và gửi tin nhắn nhân với bộ đệm. `` M' = ( r^e * M ) % N `` . Những bộ đệm này thường được gọi là các yếu tố làm mù.
-      -  2. Vì Bob chỉ kiểm tra một số ký tự, chuỗi nhất định, tin nhắn của Marvin sẽ được chấp thuận vì theo quan điểm của Bob, Marvin đang gửi một tin nhắn ngẫu nhiên không chứa bất kỳ văn bản không mong muốn nào. Và bob trả về tin nhắn đã ký. `` S’ = (M’)^d (mod N) = (r^e M)^d (mod N) = r^ed * M^d (mod N) = r * M^d (mod N)``
-      -  3. Bây giờ tất cả những gì Marvin phải làm là giải mã tin nhắn và loại bỏ yếu tố gây mù. Chữ kí cho thông điệp M chính là : ``S'/r = M^d (modN)`` 
+      - 1. Chuẩn bị một bộ đệm $r^e$ (r = số nguyên nhỏ và e = khóa công khai) và gửi tin nhắn nhân với bộ đệm. $M' = ( r^e  *  M ) % N$ . Những bộ đệm này thường được gọi là các yếu tố làm mù.
+      -  2. Vì Bob chỉ kiểm tra một số ký tự, chuỗi nhất định, tin nhắn của Marvin sẽ được chấp thuận vì theo quan điểm của Bob, Marvin đang gửi một tin nhắn ngẫu nhiên không chứa bất kỳ văn bản không mong muốn nào. Và bob trả về tin nhắn đã ký. $S’ = (M’)^d (mod N) = (r^e * M)^d (mod N) = r^{ed}  *  M^d (mod N) = r  *  M^d (mod N)$
+      -  3. Bây giờ tất cả những gì Marvin phải làm là giải mã tin nhắn và loại bỏ yếu tố gây mù. Chữ kí cho thông điệp M chính là : $\frac{S'}{r} = M^d (modN)$
 ### 8. Multi-prime RSA
  - Với n thông thường chúng ta thường factor ra 2 số nguyên tố nhưng ở trường hợp sau thì n factor ra nhiều số nguyên tố.
- - ![image](https://hackmd.io/_uploads/BylGS13_p.png)
+
+![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/5f31b687-e569-40cf-bd4f-b8cd5538272a)
+
+ 
  - Ở challenge ``Manyprime`` bên dưới thì chúng ta sẽ áp dụng cách tấn công này.
 ```
-n = p1 * p2 * p3 * ... * pn
-phi(n) = (p1-1) * (p2-1) * (p3-1) * ... * (pn-1)
+n = p1  *  p2  *  p3  *  ...  *  pn
+phi(n) = (p1-1)  *  (p2-1)  *  (p3-1)  *  ...  *  (pn-1)
 ```
 ```sage!
->>> from Crypto.Util.number import *
+>>> from Crypto.Util.number import  * 
 >>> p1 = 13
 >>> p2 = 17
 >>> p3 = 89
 >>> p4 = 101
->>> n = p1 * p2 * p3 * p4
+>>> n = p1  *  p2  *  p3  *  p4
 >>> e = 23
->>> phi = (p1-1) * (p2-1) * (p3-1) * (p4-1)
+>>> phi = (p1-1)  *  (p2-1)  *  (p3-1)  *  (p4-1)
 >>> d = inverse(e,phi)
 >>> m = 1337
 >>> c = pow(m,e,n)
@@ -303,23 +310,27 @@ True
 ### 9. Boneh Durfee Attack
  -  [Boneh Durfee Attack](https://www.sciencedirect.com/science/article/pii/S0304397518305371) là sự mở rộng, nâng cao hơn so với Wiener Attack
  -  Ở đây ``Boneh Durfee`` sẽ tấn công với điều kiện private key lớn hơn: $$d < N ^ {0.292}$$
- -  Chúng ta sử dụng tấn công Boneh Durfee để tìm lại d. ![image](https://hackmd.io/_uploads/BJuRbUhup.png)
+ -  Chúng ta sử dụng tấn công Boneh Durfee để tìm lại d. 
+
+ ![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/55e001a0-b321-4543-8e28-8ec4ca86df71)
+
+
 ```
-   φ(n) = (p-1) * (q-1) = p*q - p - q + 1 = N + 1 - p - q
+   φ(n) = (p-1)  *  (q-1) = p * q - p - q + 1 = N + 1 - p - q
    ed = 1 mod φ(n)
 => ed = k φ(n) + 1
 => k φ(n) + 1 = 0 mod e
 => k (N + 1 - p - q) + 1 = 0 mod e
 => 2k [(N + 1)/2 + (-p -q)/2] + 1 = 0 mod e
-=> f(x,y) = x *(A + y) + 1
+=> f(x,y) = x  * (A + y) + 1
 ```
- - Khi đó ta dựng lattices từ ``f(x,y) = x *(A + y) + 1 ``
+ - Khi đó ta dựng lattices từ ``f(x,y) = x  * (A + y) + 1 ``
  - Việc còn lại private key d được tìm kiếm với việc giải ra x, y.
  - Sau đây là ví dụ áp dụng ``boneh durfee`` trong bài ``Everything is Still Big``
  - Ở đây matrix của nó rất to nên ta không thể lập bằng tay trên sage được
 ```python3
 import itertools
-from sage.all import *
+from sage.all import  * 
 
 def small_roots(f, bounds, m=1, d=None):
 	if not d:
@@ -337,15 +348,15 @@ def small_roots(f, bounds, m=1, d=None):
 
 	G = Sequence([], f.parent())
 	for i in range(m+1):
-		base = N^(m-i) * f^i
+		base = N^(m-i)  *  f^i
 		for shifts in itertools.product(range(d), repeat=f.nvariables()):
-			g = base * prod(map(power, f.variables(), shifts))
+			g = base  *  prod(map(power, f.variables(), shifts))
 			G.append(g)
 
 	B, monomials = G.coefficient_matrix()
 	monomials = vector(monomials)
 
-	factors = [monomial(*bounds) for monomial in monomials]
+	factors = [monomial( * bounds) for monomial in monomials]
 	for i, factor in enumerate(factors):
 		B.rescale_col(i, factor)
 
@@ -355,7 +366,7 @@ def small_roots(f, bounds, m=1, d=None):
 		B.rescale_col(i, 1/factor)
 
 	H = Sequence([], f.parent().change_ring(QQ))
-	for h in filter(None, B*monomials):
+	for h in filter(None, B * monomials):
 		H.append(h)
 		I = H.ideal()
 		if I.dimension() == -1:
@@ -377,7 +388,7 @@ def boneh_durfee(N, e):
 	e = e
 	R = Integers(e)
 	P.<k, s> = PolynomialRing(R)
-	f = 2*k*((N+1)//2 - s) + 1
+	f = 2 * k * ((N+1)//2 - s) + 1
 	print(small_roots(f, bounds, m=3, d=4))
 
 
@@ -392,38 +403,38 @@ if __name__ == '__main__':
 ```
 ### 10. Bleichenbacher’s Attack
  
-![image](https://hackmd.io/_uploads/r1taqQeYT.png)
+![image](https://github.com/vanluongkma/RSA_RSA_ATTACK_AND_RSA_CRYPTOHACK/assets/127461439/35c50063-1639-44de-9c01-e095bc2598e2)
 
  - Cuộc tấn công này có thể áp dụng khi trao đổi khóa diễn ra bằng thuật toán RSA và phần đệm được sử dụng là PKCS # 1 v1.5.
  - Cách thức hoạt động của Attack:
      - Lưu ý rằng trong quá trình thiết lập phiên TLS với trao đổi khóa RSA, máy khách chọn một số 48 bit ngẫu nhiên (2 byte phiên bản giao thức và 46 byte ngẫu nhiên), pad theo sơ đồ mã hóa PKCS để tạo cùng thứ tự modulo n. Toàn bộ sự việc sau đó được nâng lên số mũ công khai e modulo n. Về phía người nhận, sau khi giải mã, dữ liệu được xác minh để căn chỉnh đúng nếu không gói sẽ bị loại bỏ. Sau khi giải mã, người nhận kiểm tra xem dữ liệu văn bản thuần túy có bắt đầu bằng ``0x00 02 ``, nếu không nó bị loại bỏ, thì tất cả các byte sẽ bị bỏ qua cho đến khi tìm thấy 0x00.
      - dữ liệu đệm PKCS phải luôn bắt đầu bằng 0x00 0x02.
- - Giả sử kẻ tấn công nhận được văn bản mật mã C về cơ bản là $$ M = c^d (modN)$$  kẻ tấn công không biết về M (được đệm PKCS) nhưng anh ta biết về khóa công khai (e, n).
-$$ C = M^e(modN)$$
+ - Giả sử kẻ tấn công nhận được văn bản mật mã C về cơ bản là $$M = c^d (modN)$$ kẻ tấn công không biết về M (được đệm PKCS) nhưng anh ta biết về khóa công khai (e, n).
+$$C = M^e(modN)$$
  - Kẻ tấn công sau đó nhân giá trị mật mã này với một s đã chọn. Đối với tất cả các trường hợp lỗi, máy chủ sẽ báo lỗi. Kẻ tấn công tiếp tục thay đổi giá trị của s và đợi cho đến khi được máy chủ chấp nhận.
 $$C' = Cs^e (modN)$$
- - Khi máy chủ chấp nhận C 'có nghĩa là C'sau khi giải mã bắt đầu bằng 0x00 0x02 và C' là mã hóa hợp lệ cho M * s với đệm PKCS.
-$$ M' = (Cs^e)^d (modN) = C^d s^{ed} (modN) = ms (modN) $$
+ - Khi máy chủ chấp nhận C 'có nghĩa là C'sau khi giải mã bắt đầu bằng 0x00 0x02 và C' là mã hóa hợp lệ cho M  *  s với đệm PKCS.
+$$M' = (Cs^e)^d (modN) = C^d s^{ed} (modN) = ms (modN) $$
  - Chọn hằng số $$B = 2^8(k−2)$$ k là kích thước khóa tính bằng byte, giống như trong RSA chúng ta nói 2048 bit (256 byte).
 Vì 2 byte đầu tiên là 0x00 0x02 ,2⁸ được thực hiện để hiển thị thông điệp trong biểu diễn bit
  - Khi tin nhắn được máy chủ chấp nhận, điều đó có nghĩa là.
-$$ 2B < m*s (modN) < 3B$$
- - Nếu thông điệp được chấp nhận, 2 byte đầu tiên được 0x00 02 và do đó thông điệp $$ m*s (modN) $$ hoàn toàn nhỏ hơn khi 2 byte đầu tiên được 0x00 03. Và giống như kẻ tấn công tiếp tục giảm ranh giới bằng cách thực hiện tìm kiếm nhị phân cho đến khi một giá trị duy nhất được tìm thấy.
+$$2B < m * s (modN) < 3B$$
+ - Nếu thông điệp được chấp nhận, 2 byte đầu tiên được 0x00 02 và do đó thông điệp $$m * s (modN) $$ hoàn toàn nhỏ hơn khi 2 byte đầu tiên được 0x00 03. Và giống như kẻ tấn công tiếp tục giảm ranh giới bằng cách thực hiện tìm kiếm nhị phân cho đến khi một giá trị duy nhất được tìm thấy.
 ### 11. Brute force attack on small secret CRT-Exponents
  - Giả sử tôi có:
-    $$ d_p ≡ e^{-1} \ (mod(p-1))$$
-    $$ d_q ≡ e^{-1} \ (mod(q-1))$$
+    $$d_p ≡ e^{-1} \ (mod(p-1))$$
+    $$d_q ≡ e^{-1} \ (mod(q-1))$$
  - Với dp ta có:
-    $$ d_p * e ≡ 1 \ (mod(p-1))$$
-    $$ d_p * e ≡ 1 + k(p-1)$$
+    $$d_p  *  e ≡ 1 \ (mod(p-1))$$
+    $$d_p  *  e ≡ 1 + k(p-1)$$
  - Chọn một số m bất kì sao cho ``GCD(m, p) = 1``
  - Khi đó:
-    $$ m^{d_p*e} = m^{1+k(p-1)} = m * m^{(p-1)^k}  $$
+    $$m^{d_p * e} = m^{1+k(p-1)} = m  *  m^{(p-1)^k}  $$
  - Theo Fermat’s little theorem ta có:
-    $$ m * m^{(p-1)^k}(modP) = m * 1^k(modP) = m (modP) $$
-    $$ m^{e*d_p} ≡ m(modP) \ hay \ m - m^{e*d_p} = k*p$$
+    $$m  *  m^{(p-1)^k}(modP) = m  *  1^k(modP) = m (modP) $$
+    $$m^{e * d_p} ≡ m(modP) \ hay \ m - m^{e * d_p} = k * p$$
  - Và cuối cùng:
-    $$ GCD(m-m^{e*d_p}, n) = GCD(k*p, p* q) = p $$ với ``m < n ``
+    $$GCD(m-m^{e  *  d_p}, n) = GCD(k  * p, p *  q) = p $$ với ``m < n ``
  - Code minh họa:
 ```sage
 sage: from Crypto.Util.number import isPrime, GCD
@@ -432,7 +443,7 @@ sage: from Crypto.Util.number import isPrime, GCD
 .... e=1817084480271067137841898198122075168542117135135738925285694555698012943264936112861815937200507849960517390660821911331068907250788900674614345400567411
 ....: m = 7516789928765 # random number
 ....: for dp in range(1000000):
-....:     f = GCD(m-pow(m, e*dp, n), n)
+....:     f = GCD(m-pow(m, e * dp, n), n)
 ....:     if f > 1:
 ....:         print(dp, f)
 ....:         break
