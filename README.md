@@ -4,20 +4,20 @@
 
 - RSA thuộc nhóm hệ mã khóa công khai, dựa vào độ khó của bài toán phân tích 1 số ra thừa số nguyên tố (factoring problem). Để tạo cặp khóa Public key và Private key, Alice cần: 
     - Chọn 2 số nguyên tố lớn p, q với p ≠ q 
-    - Tính $$N = pq $$
-    - Tính giá trị hàm số Ơle $$ φ(N) = (p-1)(q-1) $$
-    - Chọn 1 số e sao cho $$1 < e < φ(N) \ và \ gcd(e,φ(N)) = 1 $$
+    - Tính $$N = pq$$
+    - Tính giá trị hàm số Ơle $$φ(N) = (p-1)(q-1)$$
+    - Chọn 1 số e sao cho $$1 < e < φ(N) \ và \ gcd(e,φ(N)) = 1$$
     - Tính $$d = e^{-1} (mod φ(N))$$, số d thỏa mãn $$ed ≡ 1 (mod φ(N))$$
  - Public Key gồm:
 
-     $$ N  \text{ - mudulus} $$
-     $$ e  \text{ - số mũ mã hóa} $$
+     $$N  \text{ - mudulus} $$
+     $$e  \text{ - số mũ mã hóa} $$
  - Private Key gồm:
 
-     $$ N  \text{ - mudulus, xuất hiện cả trong khóa công khai và bí mật} $$
-     $$ d  \text{ - số mũ giải mã} $$
+     $$N  \text{ - mudulus, xuất hiện cả trong khóa công khai và bí mật}$$
+     $$d  \text{ - số mũ giải mã}$$
  - Khi Bob muốn gửi một tin nhắn M cho Alice, Bob chuyển M thành một số m < n theo 1 cách thỏa thuận trước. Bob sẽ tính ra bản mã c từ bản rõ m theo công thức: 
-     $$ c = m ^ e (modN) $$
+     $$c = m ^ e (modN)$$
  - Để giải mã, Alice dùng Private Key của mình để tính ngược lại:
      $$m = c ^ d (modN)$$
  - Quá trình giải mã có thể thu được m ban đầu là do: 
@@ -62,8 +62,8 @@ print(long_to_bytes(decrypted))
 - Sẽ không có vấn đề gì nếu cô ấy sử dụng đệm nhưng rõ ràng không phải vậy. Bạn chặn tin nhắn và suy ra từ khóa công khai rằng nó được tính toán như sau: 
      $$C = M^3 [n]$$
 
- - Nhưng vì nhỏ, M^3 < n vì M vậy nó không bị ảnh hưởng bởi modulo. Bạn chỉ cần tính căn bậc ba của C để có được thông điệp gốc.
-        $$ C = M ^ 3 (modN) = M^3 $$
+ - Nhưng vì nhỏ, $M^3 < n$ vì $M$ vậy nó không bị ảnh hưởng bởi modulo. Bạn chỉ cần tính căn bậc ba của C để có được thông điệp gốc.
+        $$C = M ^ 3 (modN) = M^3 $$
  - Code minh họa: 
 ```python3
 from Crypto.Util.number import *
@@ -89,11 +89,11 @@ print(long_to_bytes(gmpy2.iroot(cipher, e)[0]))
 ```
 ### 3.Fermat Attack
 - Trong thực tế, ta cần chọn p, q có cùng độ dài bit để tạo được 1 mã RSA mạnh, tuy nhiên nếu p, q quá gần nhau thì lại tạo ra lỗ hổng bảo mật khi mà attacker có thể dễ dàng factorize n
-- rong thực tế nếu: p - q < n^(1/4) thì Fermat’s factoring algorithm có thể phân tích n 1 cách hiệu quả.
+- rong thực tế nếu: $p - q < n^{\frac{1}{4}}$ thì Fermat’s factoring algorithm có thể phân tích n 1 cách hiệu quả.
 - Ta có : 
-  - Với x = (p - q)/2 & y = (p + q)/2
-n có thể được phân tích thừa số nguyên tố như sau: n = x^2 - y^2 = (x - y)(x + y)
-- Định lý Fermat giúp tìm p, q
+  - Với $x = \frac{p - q}{2}$ & $y = \frac{p + q}{2}$
+n có thể được phân tích thừa số nguyên tố như sau: $n = x^2 - y^2 = (x - y)(x + y)$
+- Định lý Fermat giúp tìm $p, q$
 - Code minh họa:
 ```python3
 def isqrt(n):
@@ -132,9 +132,9 @@ if __name__ == '__main__':
     main()
 ```
 ### 4.Hastad Broadcast Attack
- - Đặt bối cảnh một mạng nội bộ sử dụng RSA làm phương thức bảo mật truyền tin. Mỗi máy tính trong mạng LAN sẽ có một bộ Public Key (ni, ei) riêng. Giả sử rằng, quản trị viên muốn sử dụng hệ thống mã hóa đơn giản nên anh ta chọn 1 số e nhỏ (e = 3) để dùng chung cho tất cả các máy trong mạng LAN, hay nói cách khác e1 = e2 = en = e = 3.
-- Kịch bản tấn công xảy ra nếu máy chủ gửi cùng 1 tin nhắn broadcast m (đã được mã hóa thành c1, c2, ... cho nhiều máy tính trong mạng, và ta bắt được ít nhất e ciphertext c1, c2, ..., ce. Lúc này, ta sẽ có thể khôi phục lại plaintext m không mấy khó khăn.
-- Giả sử e = 3, đặt M = m^3. Nhiệm vụ của ta là giải hệ phương trình đồng dư: 
+ - Đặt bối cảnh một mạng nội bộ sử dụng RSA làm phương thức bảo mật truyền tin. Mỗi máy tính trong mạng LAN sẽ có một bộ Public Key (ni, ei) riêng. Giả sử rằng, quản trị viên muốn sử dụng hệ thống mã hóa đơn giản nên anh ta chọn 1 số e nhỏ (e = 3) để dùng chung cho tất cả các máy trong mạng LAN, hay nói cách khác $e_1 = e_2 = e_n = e = 3$.
+- Kịch bản tấn công xảy ra nếu máy chủ gửi cùng 1 tin nhắn broadcast m (đã được mã hóa thành $c_1, c_2$, ... cho nhiều máy tính trong mạng, và ta bắt được ít nhất e ciphertext $c_1$, $c_2$, ..., $c_e$. Lúc này, ta sẽ có thể khôi phục lại plaintext m không mấy khó khăn.
+- Giả sử e = 3, đặt $M = m^3$. Nhiệm vụ của ta là giải hệ phương trình đồng dư: 
 ```sage!
 M ≡ c1[n1]
 M ≡ c2[n2]
@@ -175,7 +175,7 @@ print(long_to_bytes(m))
 ```
 ### 5.Wiener Attack
 - Để giảm thời gian giải mã (hoặc thời gian tạo chữ ký), người ta có thể muốn sử dụng một giá trị nhỏ của d hơn là một d ngẫu nhiên. Do lũy thừa mô-đun cần có thời gian tuyến tính trong log2 d, nên một d nhỏ có thể cải thiện hiệu suất ít nhất là hệ số 10 (đối với mô-đun 1024 bit). Thật không may, một cuộc tấn công thông minh của M. Wiener [19] cho thấy rằng một d nhỏ dẫn đến sự phá vỡ hoàn toàn hệ thống mật mã.
-- Đặt N= p*q với q < p < 2q . Đặt ![](https://hackmd.io/_uploads/Sy8w0eb5h.png). Cho trước (N,e) với ed = 1 mod phi(N), Marvin có thể phục hồi d một cách hiệu quả.
+- Đặt $N= p*q$ với $q < p < 2q$ . Đặt ![](https://hackmd.io/_uploads/Sy8w0eb5h.png). Cho trước (N,e) với ed = 1 mod phi(N), Marvin có thể phục hồi d một cách hiệu quả.
 - Bằng chứng dựa trên các xấp xỉ sử dụng các phân số liên tục. Vì ed = 1 mod phi(N), nên tồn tại k sao cho ed − kphi(N) = 1. Do đó, ![](https://hackmd.io/_uploads/HyEwtb-5h.png)
 - Do đó, k/d là một xấp xỉ của e/phi(N). Mặc dù Marvin không biết phi(N), anh ấy có thể sử dụng N để tính gần đúng nó. Thật vậy, vì phi(N) = N − p − q + 1 và p + q − 1 < 3sqrt(N), nên chúng ta có |N − phi(N)| < 3sqrt(N). Sử dụng N thay cho phi(N), chúng tôi thu được: ![](https://hackmd.io/_uploads/SkDUqWZ92.png)
 - Bây giờ, kphi(N) = ed − 1 < ed. Vì e < phi(N), chúng ta thấy rằng k < d < ![](https://hackmd.io/_uploads/HJ52cWbc3.png) . Do đó chúng tôi có được:![image](https://hackmd.io/_uploads/SkjBsRo_p.png)
