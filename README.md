@@ -1,4 +1,4 @@
-## RSA
+## 1. RSA
 
 _Trong mật mã học, RSA là một thuật toán mật mã hóa khóa công khai. Đây là thuật toán đầu tiên phù hợp với việc tạo ra chữ ký điện tử đồng thời với việc mã hóa. Nó đánh dấu một sự tiến bộ vượt bậc của lĩnh vực mật mã học trong việc sử dụng khóa công cộng. RSA đang được sử dụng phổ biến trong thương mại điện tử và được cho là đảm bảo an toàn với điều kiện độ dài khóa đủ lớn._
 
@@ -72,7 +72,7 @@ Mã hóa RSA đóng vai trò quan trọng trong việc thiết lập kết nối
 
 RSA còn sử dụng để tạo chữ kí số, xác thực Certificate HTTPS.
 
-## Attack RSA
+## 2. Attack RSA
 
 ### Small n
 
@@ -654,7 +654,10 @@ sage: from Crypto.Util.number import isPrime, GCD
 187261 8275629468590614667884614599278593237258686111405345888268221129814081809682982742676180514534238891248302334619164139839173447495925780801832743975865311
 True
 ```
+## 3. RSA Cryptohack
+_The challenges was completely resolved on April 21, 2024_
 
+_URL:_ https://vanluongkma.github.io/posts/RSA-Cryptohack/
 
 ## Reference
 
