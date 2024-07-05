@@ -597,7 +597,6 @@ Giả sử tôi có:
 $$
 \begin{cases}
 d_p ≡ e^{-1} \ (mod(p-1)) \\
-
 d_q ≡ e^{-1} \ (mod(q-1))
 \end{cases}
 $$
